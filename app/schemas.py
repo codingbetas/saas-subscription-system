@@ -13,6 +13,8 @@ class UserResponse(BaseModel):
     role: str
     created_at: datetime
 
+    model_config = {"from_attributes": True}
+
 
 class PlanCreate(BaseModel):
     name: str
@@ -27,6 +29,8 @@ class PlanResponse(BaseModel):
     duration_days: int
     is_active: bool
 
+    model_config = {"from_attributes": True}
+
 
 class SubscriptionCreate(BaseModel):
     plan_id: int
@@ -40,5 +44,4 @@ class SubscriptionResponse(BaseModel):
     start_date: datetime
     end_date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = {"from_attributes": True}
