@@ -18,23 +18,28 @@ def get_db():
 
 @router.post("/", response_model=schemas.UserResponse)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    try:
+        existing_user = db.query(models.User).filter(models.User.email == user.email).first()
 
-    existing_user = db.query(models.User).filter(models.User.email == user.email).first()
-    if existing_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
+        if existing_user:
+            raise HTTPException(status_code=400, detail="Email already registered")
 
-    hashed_pw = hash_password(user.password)
+        hashed_pw = hash_password(user.password)
 
-    new_user = models.User(
-        email=user.email,
-        hashed_password=hashed_pw
-    )
+        new_user = models.User(
+            email=user.email,
+            hashed_password=hashed_pw
+        )
 
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
 
-    return new_user
+        return new_user
+
+    except Exception as e:
+        print("ERROR:", str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/me")
