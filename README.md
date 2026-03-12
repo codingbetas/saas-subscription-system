@@ -7,7 +7,7 @@ A full-stack SaaS engine built with a decoupled architecture, featuring a FastAP
 
 ## 📸 Screenshots
 
-<img width="943" height="721" alt="Image" src="https://github.com/user-attachments/assets/6733ce8a-8c8e-489a-83c1-8128744fbd7f" />
+<img width="954" height="872" alt="Image" src="https://github.com/user-attachments/assets/607c8b80-02ea-47b1-a0df-0f635a9b1628" />
 
 ---
 
