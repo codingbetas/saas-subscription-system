@@ -1,4 +1,3 @@
-type: "module"
 export default {
   plugins: {
     '@tailwindcss/postcss': {}, // Updated plugin name
