@@ -6,15 +6,10 @@ from app.routers import auth, users, plans, subscription, admin
 
 app = FastAPI(title="SaaS Subscription System")
 
-origins = [
-    "http://localhost:3000",    # Local development
-    "http://127.0.0.1:3000",    # Local development alternative
-    "https://saas-subscription-system.onrender.com", # Add your future Vercel URL here
-]
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # frontend URL
+    allow_origin_regex=r"https://.*\.vercel\.app|http://localhost:3000|http://127.0.0.1:3000",  # frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
