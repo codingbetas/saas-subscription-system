@@ -9,6 +9,10 @@ export default function MySubScription() {
   const [mySub, setMySub] = useState<Subscription | null>(null);
   const [plans, setPlans] = useState<Plan[]>([]); 
   const [loading, setLoading] = useState(true);
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState(0);
+  const [days, setDays] = useState(30);
+
   const router = useRouter();
 
   const fetchData = async () => {
@@ -43,10 +47,11 @@ export default function MySubScription() {
     e.preventDefault();
     try {
       await api.post('/plans/', {
-        name: "Premium",
-        price: 1440,
-        duration_days: 30
-      });
+      name: name,
+      price: Number(price),
+      duration_days: Number(days)
+    });
+
       fetchData(); // Refresh the list after creating
     } catch (err) {
       alert("Failed to create plan. Are you logged in?");
@@ -60,12 +65,28 @@ export default function MySubScription() {
       <h1 className="text-2xl font-bold mb-6">Plan Management</h1>
       
       {/* Create Plan Form */}
-      <form onSubmit={handleCreatePlan} className="mb-8 p-4 border border-dashed rounded-lg bg-gray-50">
-        <p className="mb-2 text-sm text-gray-600">Admin Action:</p>
-        <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition">
-          + Create Test Plan (Premium)
-        </button>
+      <form onSubmit={handleCreatePlan} className="mb-8 p-6 border rounded-xl bg-gray-800/50">
+      <input 
+      placeholder="Plan Name" 
+      onChange={(e) => setName(e.target.value)} 
+      className="p-2 mr-2 rounded bg-black/20"
+      />
+      <input 
+      type="number" 
+      placeholder="Price" 
+      onChange={(e) => setPrice(Number(e.target.value))} 
+      className="p-2 mr-2 rounded bg-black/20"
+      />
+      <button type="submit" className="bg-purple-600 px-4 py-2 rounded">Create Plan</button>
+      <input 
+      type="number"
+      placeholder="Days"
+      className="p-2 rounded bg-black/40 text-white w-24"
+      onChange={(e) => setDays(Number(e.target.value))}
+      value={days}
+      />
       </form>
+
 
       {/* Plans List */}
       <div className="grid gap-4">

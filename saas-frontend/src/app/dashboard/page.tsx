@@ -46,18 +46,55 @@ export default function DashboardPage() {
       </span>
     </header>
 
-    {user && ( // Only render the details if we have user data
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="p-6 bg-[#1a1f2e] border border-gray-800 rounded-2xl shadow-sm">
-          <h3 className="text-sm font-bold text-gray-500 uppercase mb-4">Account</h3>
-          <p className="text-lg font-semibold text-white">{user.email}</p>
-          <p className="text-sm text-blue-400 font-mono">Role: {user.role}</p>
-        </div>
-        <div className="md:col-span-2">
-          <MySubscription />
-        </div>
+    {user && (
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="space-y-6">
+      {/* Account Info Card */}
+      <div className="p-6 bg-[#1a1f2e] border border-gray-800 rounded-2xl shadow-sm">
+        <h3 className="text-sm font-bold text-gray-500 uppercase mb-4">Account</h3>
+        <p className="text-lg font-semibold text-white">{user.email}</p>
+        <p className="text-sm text-blue-400 font-mono">Role: {user.role}</p>
       </div>
-    )}
+
+      {/* ADMIN PANEL: CRUD ACTIONS */}
+      {user.role === 'admin' && (
+        <div className="p-6 bg-purple-900/10 border border-purple-500/30 rounded-2xl space-y-4">
+          <h3 className="text-sm font-bold text-purple-400 uppercase">Admin CRUD Panel</h3>
+          
+          {/* Create Plan Button */}
+          <button 
+            onClick={async () => {
+              const name = prompt("Plan Name (e.g. Pro)?");
+              const price = prompt("Price (e.g. 50)?");
+              const days = prompt("Duration in Days (e.g. 30)?");
+              if (name && price && days) {
+                try {
+                  await api.post('/plans/', { name, price: Number(price), duration_days: Number(days) });
+                  alert("Plan Created!");
+                  window.location.reload(); 
+                } catch (e) { alert("Failed to create plan"); }
+              }
+            }}
+            className="w-full py-2 bg-purple-600 hover:bg-purple-500 text-white rounded font-bold text-xs transition"
+          >
+            + CREATE NEW PLAN
+          </button>
+
+          {/* Logic for Stats (Already in your code) */}
+          <div className="pt-4 border-t border-purple-500/20">
+            <p className="text-xs text-gray-400">Total Subscribers: <span className="text-white">{stats.totalSubscribers}</span></p>
+            <p className="text-xs text-gray-400">Active Plans: <span className="text-white">{stats.activePlans}</span></p>
+          </div>
+        </div>
+      )}
+    </div>
+
+    {/* Subscription Section (Right side) */}
+    <div className="md:col-span-2">
+      <MySubscription />
+    </div>
+  </div>
+  )}
   </div>
 );
 }

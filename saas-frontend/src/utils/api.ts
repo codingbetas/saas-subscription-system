@@ -9,14 +9,17 @@ const api = axios.create({
 
 console.log("Current API Base URL:", api.defaults.baseURL);
 
+// utils/api.ts
 api.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('token');
+    console.log("DEBUG: Token found in localStorage:", token); // <-- Add this
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
   }
   return config;
 });
+
 
 export default api;
